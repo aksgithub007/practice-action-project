@@ -1,0 +1,46 @@
+name: Deployment
+on: push
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v7
+      - name: install node js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "latest"
+      - name: install depedency
+        run: npm ci
+      - name: test lint cases
+        run: npm run lint
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v7
+      - name: install node js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "latest"
+      - name: install depedency
+        run: npm ci
+      - name: check test cases
+        run: npm run test
+  deploy:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: get code
+        uses: actions/checkout@v7
+      - name: install node js
+        uses: actions/setup-node@v7
+        with:
+          node-version: "latest"
+      - name: install depedency
+        run: npm ci
+      - name: build app
+        run: npm run build
+      - name: deploy app
+        run: echo "deploying app ...."
